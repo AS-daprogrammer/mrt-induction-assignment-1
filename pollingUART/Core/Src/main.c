@@ -90,9 +90,9 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-   uint8_t timeout = 5000;
+      uint32_t timeout = 5000;
 	  uint8_t buffer[1];
-	  char message[22] = "I’m feeling lonely :(";
+	  char message[22] = "I'm feeling lonely :(";
 	  char anothermessage[13]="Invalid Data";
 
   /* USER CODE END 2 */
