@@ -125,6 +125,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	  else{
 		  HAL_UART_Transmit_IT(&huart2,(uint8_t *)anothermessage,sizeof(anothermessage));
 	  }
+	  timetowait=5000;
 	  timeatlastreception = HAL_GetTick();
       HAL_UART_Receive_IT(&huart2, buffer, 1);
 }
