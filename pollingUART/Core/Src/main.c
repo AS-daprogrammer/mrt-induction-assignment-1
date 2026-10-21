@@ -107,7 +107,7 @@ int main(void)
 	  HAL_StatusTypeDef status = HAL_UART_Receive(&huart2, buffer, sizeof(buffer), timeout);
 
 	  if( status == HAL_TIMEOUT){
-		  HAL_UART_Transmit(&huart2,message,sizeof(message),100);
+		  HAL_UART_Transmit(&huart2,(uint8_t *)message,sizeof(message),100);
 		  timeout=2000;
 	  }
 	  else if(status == HAL_OK){
@@ -118,7 +118,7 @@ int main(void)
 			  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
           }
 		  else{
-			  HAL_UART_Transmit(&huart2,anothermessage,sizeof(anothermessage),100);
+			  HAL_UART_Transmit(&huart2,(uint8_t *)anothermessage,sizeof(anothermessage),100);
 		  }
 		  timeout = 5000;
 	  }
