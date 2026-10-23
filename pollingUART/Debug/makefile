@@ -52,6 +52,12 @@ default.size.stdout \
 OBJDUMP_LIST += \
 pollingUART.list \
 
+OBJCOPY_HEX += \
+pollingUART.hex \
+
+OBJCOPY_BIN += \
+pollingUART.bin \
+
 
 # All Target
 all: main-build
@@ -75,12 +81,22 @@ pollingUART.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+pollingUART.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "pollingUART.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+pollingUART.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "pollingUART.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) default.size.stdout pollingUART.elf pollingUART.list pollingUART.map
+	-$(RM) default.size.stdout pollingUART.bin pollingUART.elf pollingUART.hex pollingUART.list pollingUART.map
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

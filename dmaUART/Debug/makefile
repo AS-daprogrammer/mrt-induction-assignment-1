@@ -52,6 +52,12 @@ default.size.stdout \
 OBJDUMP_LIST += \
 dmaUART.list \
 
+OBJCOPY_HEX += \
+dmaUART.hex \
+
+OBJCOPY_BIN += \
+dmaUART.bin \
+
 
 # All Target
 all: main-build
@@ -75,12 +81,22 @@ dmaUART.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+dmaUART.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "dmaUART.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+dmaUART.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "dmaUART.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) default.size.stdout dmaUART.elf dmaUART.list dmaUART.map
+	-$(RM) default.size.stdout dmaUART.bin dmaUART.elf dmaUART.hex dmaUART.list dmaUART.map
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

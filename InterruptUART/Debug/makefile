@@ -52,6 +52,12 @@ default.size.stdout \
 OBJDUMP_LIST += \
 InterruptUART.list \
 
+OBJCOPY_HEX += \
+InterruptUART.hex \
+
+OBJCOPY_BIN += \
+InterruptUART.bin \
+
 
 # All Target
 all: main-build
@@ -75,12 +81,22 @@ InterruptUART.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+InterruptUART.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "InterruptUART.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+InterruptUART.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "InterruptUART.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) InterruptUART.elf InterruptUART.list InterruptUART.map default.size.stdout
+	-$(RM) InterruptUART.bin InterruptUART.elf InterruptUART.hex InterruptUART.list InterruptUART.map default.size.stdout
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'
